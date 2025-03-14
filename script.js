@@ -1,4 +1,11 @@
-// 📌 Three.js Szene erstellen
+import * as THREE from './libs/three.module.js';
+import { GLTFLoader } from './libs/GLTFLoader.js';
+import { OrbitControls } from './libs/OrbitControls.js';
+
+
+
+
+// 📌 Szene & Renderer erstellen
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -7,15 +14,21 @@ document.getElementById("container").appendChild(renderer.domElement);
 
 // 📌 360°-Hintergrundbild laden
 const textureLoader = new THREE.TextureLoader();
-const inputImagePath = "./data/input.png"; // Prüfe, ob der Pfad korrekt ist
-
-textureLoader.load(inputImagePath, function (texture) {
-    texture.mapping = THREE.EquirectangularReflectionMapping;
-    texture.colorSpace = THREE.SRGBColorSpace;
-    scene.background = texture;
-}, undefined, function (error) {
-    console.error("❌ Fehler beim Laden des Hintergrundbilds:", error);
-});
+textureLoader.load(
+    "./data/input.png",
+    function (texture) {
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        texture.colorSpace = THREE.SRGBColorSpace;
+        texture.flipY = false; // Falls das Bild auf dem Kopf steht
+        scene.background = texture;
+        console.log("✅ 360°-Bild erfolgreich geladen");
+    },
+    undefined,
+    function (error) {
+        console.warn("⚠️ 360°-Bild konnte nicht geladen werden. Verwende Standardfarbe.", error);
+        scene.background = new THREE.Color(0x888888);
+    }
+);
 
 // 📌 Lichtquelle für bessere Darstellung
 const ambientLight = new THREE.AmbientLight(0xffffff, 1);
@@ -25,28 +38,35 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 directionalLight.position.set(1, 2, 3);
 scene.add(directionalLight);
 
-// 📌 GLTF-Loader für das Wärmepumpenmodell
-const loader = new THREE.GLTFLoader();
+// 📌 GLTFLoader für Wärmepumpe
+const loader = new GLTFLoader();
 let currentModel;
-let modelPath = "assets/models/rendered_lg.glb";  // Standardmodell
+let modelPath = "assets/models/rendered_lg.glb"; // Standardmodell
 
 function loadModel() {
     if (currentModel) {
         scene.remove(currentModel);
     }
 
-    loader.load(modelPath, function (gltf) {
-        currentModel = gltf.scene;
-        currentModel.scale.set(0.8, 0.8, 0.8); // 📌 Modellgröße anpassen
-        currentModel.position.set(0, -0.5, -2); // 📌 Standard-Position (wird später vom Marker gesetzt)
-        scene.add(currentModel);
-        console.log("✅ Modell geladen:", modelPath);
-    }, undefined, function (error) {
-        console.error("❌ Fehler beim Laden des Modells:", error);
-    });
+    loader.load(
+        modelPath,
+        function (gltf) {
+            currentModel = gltf.scene;
+            currentModel.scale.set(0.8, 0.8, 0.8);
+            currentModel.position.set(0, -0.5, -2); // Standard-Position (später von Marker ersetzt)
+            scene.add(currentModel);
+            console.log("✅ Modell geladen:", modelPath);
+        },
+        function (xhr) {
+            console.log(`📥 Modell lädt: ${(xhr.loaded / xhr.total * 100).toFixed(2)}%`);
+        },
+        function (error) {
+            console.error("❌ Fehler beim Laden des Modells:", error);
+        }
+    );
 }
 
-// 📌 Funktion zur Aktualisierung der Modellposition basierend auf `marker_data.json`
+// 📌 Wärmepumpe-Position basierend auf Marker
 function updateModelPosition() {
     fetch("data/marker_data.json")
         .then(response => response.json())
@@ -61,29 +81,29 @@ function updateModelPosition() {
                 }
             }
         })
-        .catch(error => console.error("⚠️ Fehler beim Laden der Marker-Daten:", error));
+        .catch(error => console.warn("⚠️ Fehler beim Laden der Marker-Daten:", error));
 }
 
-// 📌 Funktion zur Auswahl des Wärmepumpenmodells basierend auf `render_selection.json`
+// 📌 Wärmepumpenmodell wechseln
 function updateModelSelection() {
     fetch("data/render_selection.json")
         .then(response => response.json())
         .then(data => {
-            modelPath = data.selected_model === "lg" ? "assets/models/rendered_lg.glb" : "assets/models/rendered_buderus.glb";
+            modelPath = data.selected_model === "lg"
+                ? "assets/models/rendered_lg.glb"
+                : "assets/models/rendered_buderus.glb";
             loadModel();
         })
-        .catch(error => console.error("⚠️ Fehler beim Laden der Modell-Daten:", error));
+        .catch(error => console.warn("⚠️ Fehler beim Laden der Modell-Daten:", error));
 }
 
 // 📌 Button für Wärmepumpen-Wechsel
-document.getElementById("switchModel").addEventListener("click", () => {
-    updateModelSelection();
-});
+document.getElementById("switchModel").addEventListener("click", updateModelSelection);
 
 // 📌 Kamera-Steuerung mit OrbitControls
-const controls = new THREE.OrbitControls(camera, renderer.domElement);
+const controls = new OrbitControls(camera, renderer.domElement);
 camera.position.set(0, 1, 3);
-controls.enableDamping = true; // Sanfte Bewegung
+controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 controls.update();
 
