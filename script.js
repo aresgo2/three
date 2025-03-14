@@ -7,7 +7,7 @@ document.getElementById("container").appendChild(renderer.domElement);
 
 // 📌 360°-Hintergrundbild laden
 const textureLoader = new THREE.TextureLoader();
-const inputImagePath = "web_app/data/input.png"; // Prüfe, ob der Pfad korrekt ist
+const inputImagePath = "./data/input.png"; // Prüfe, ob der Pfad korrekt ist
 
 textureLoader.load(inputImagePath, function (texture) {
     texture.mapping = THREE.EquirectangularReflectionMapping;
