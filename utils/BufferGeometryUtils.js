@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
 	BufferAttribute,
 	BufferGeometry,
@@ -9,7 +10,7 @@ import {
 	TriangleStripDrawMode,
 	TrianglesDrawMode,
 	Vector3,
-} from 'three';
+    import * as THREE from 'https://unpkg.com/three@0.159.0/build/three.module.js';
 
 /** @module BufferGeometryUtils */
 

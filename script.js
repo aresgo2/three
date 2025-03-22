@@ -1,6 +1,10 @@
-import * as THREE from 'https://unpkg.com/three@0.150.0/build/three.module.js';
-import { GLTFLoader } from 'https://unpkg.com/three@0.150.0/examples/jsm/loaders/GLTFLoader.js';
-import { OrbitControls } from 'https://unpkg.com/three@0.150.0/examples/jsm/controls/OrbitControls.js';
+import * as THREE from 'https://unpkg.com/three@0.159.0/build/three.module.js';
+import { GLTFLoader } from 'https://unpkg.com/three@0.159.0/examples/jsm/loaders/GLTFLoader.js';
+import { OrbitControls } from 'https://unpkg.com/three@0.159.0/examples/jsm/controls/OrbitControls.js';
+
+
+
+
 
 // 📌 Szene & Renderer erstellen
 const scene = new THREE.Scene();

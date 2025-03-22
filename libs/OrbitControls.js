@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
 	EventDispatcher,
 	MOUSE,
@@ -9,7 +10,7 @@ import {
 	Plane,
 	Ray,
 	MathUtils
-} from 'https://unpkg.com/three@0.150.0/build/three.module.js';
+	import * as THREE from 'https://cdn.skypack.dev/three@0.159.0';
 
 // OrbitControls performs orbiting, dollying (zooming), and panning.
 // Unlike TrackballControls, it maintains the "up" direction object.up (+Y by default).

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
 	AnimationClip,
 	Bone,
@@ -63,7 +64,7 @@ import {
 	Vector3,
 	VectorKeyframeTrack,
 	SRGBColorSpace
-} from 'https://unpkg.com/three@0.150.0/build/three.module.js';
+	import * as THREE from 'https://cdn.skypack.dev/three@0.159.0';
 import { toTrianglesDrawMode } from '../utils/BufferGeometryUtils.js';
 
 class GLTFLoader extends Loader {
