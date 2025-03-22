@@ -9,8 +9,8 @@ import {
 	Vector3,
 	Plane,
 	Ray,
-	MathUtils
-	import * as THREE from 'https://cdn.skypack.dev/three@0.159.0';
+		MathUtils 
+	} from 'https://cdn.skypack.dev/three@0.159.0';
 
 // OrbitControls performs orbiting, dollying (zooming), and panning.
 // Unlike TrackballControls, it maintains the "up" direction object.up (+Y by default).

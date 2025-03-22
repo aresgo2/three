@@ -64,7 +64,8 @@ import {
 	Vector3,
 	VectorKeyframeTrack,
 	SRGBColorSpace
-	import * as THREE from 'https://cdn.skypack.dev/three@0.159.0';
+} from 'https://cdn.skypack.dev/three@0.159.0';
+const THREE = require('three');
 import { toTrianglesDrawMode } from '../utils/BufferGeometryUtils.js';
 
 class GLTFLoader extends Loader {
