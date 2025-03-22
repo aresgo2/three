@@ -10,8 +10,8 @@ import {
 	TriangleStripDrawMode,
 	TrianglesDrawMode,
 		Vector3
-	} from 'https://unpkg.com/three@0.159.0/build/three.module.js';
-	import * as THREE from 'https://unpkg.com/three@0.159.0/build/three.module.js';
+	} from 'https://cdn.skypack.dev/three@0.159.0';
+	import * as THREE from 'cdn.skypack.dev/three@0.159.0/build/three.module.js';
 
 /** @module BufferGeometryUtils */
 
