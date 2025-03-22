@@ -1,9 +1,6 @@
 import * as THREE from 'https://unpkg.com/three@0.150.0/build/three.module.js';
-import { GLTFLoader } from './libs/GLTFLoader.js';
-import { OrbitControls } from './libs/OrbitControls.js';
-
-
-
+import { GLTFLoader } from 'https://unpkg.com/three@0.150.0/examples/jsm/loaders/GLTFLoader.js';
+import { OrbitControls } from 'https://unpkg.com/three@0.150.0/examples/jsm/controls/OrbitControls.js';
 
 // 📌 Szene & Renderer erstellen
 const scene = new THREE.Scene();
@@ -19,7 +16,7 @@ textureLoader.load(
     function (texture) {
         texture.mapping = THREE.EquirectangularReflectionMapping;
         texture.colorSpace = THREE.SRGBColorSpace;
-        texture.flipY = false; // Falls das Bild auf dem Kopf steht
+        texture.flipY = false;
         scene.background = texture;
         console.log("✅ 360°-Bild erfolgreich geladen");
     },
@@ -33,7 +30,6 @@ textureLoader.load(
 // 📌 Lichtquelle für bessere Darstellung
 const ambientLight = new THREE.AmbientLight(0xffffff, 1);
 scene.add(ambientLight);
-
 const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 directionalLight.position.set(1, 2, 3);
 scene.add(directionalLight);
@@ -47,13 +43,12 @@ function loadModel() {
     if (currentModel) {
         scene.remove(currentModel);
     }
-
     loader.load(
         modelPath,
         function (gltf) {
             currentModel = gltf.scene;
             currentModel.scale.set(0.8, 0.8, 0.8);
-            currentModel.position.set(0, -0.5, -2); // Standard-Position (später von Marker ersetzt)
+            currentModel.position.set(0, -0.5, -2);
             scene.add(currentModel);
             console.log("✅ Modell geladen:", modelPath);
         },
